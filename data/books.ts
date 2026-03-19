@@ -251,7 +251,7 @@ export const books: Book[] = [
     slug: "pride-and-prejudice",
     title: "Pride and Prejudice",
     author: "Jane Austen",
-    coverUrl: "/Pride%20and%20Prejudice-L.jpg",
+    coverUrl: "/Pride and Prejudice-L.jpg",
     rating: 4.8,
     reviewsCount: 4100,
     genre: "Роман",

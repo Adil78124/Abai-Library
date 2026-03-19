@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-const LOGO_SRC = "/LogoAbaiLibraryNoBackground%204.png";
+const LOGO_SRC = "/LogoAbaiLibraryNoBackground 4.png";
 
 const navItems = [
   { href: "/", label: "Главная" },
