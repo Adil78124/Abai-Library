@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+.vercel/
+.turbo/
+.env*
+.DS_Store
+.cursor/
+.vscode/
+*.log
