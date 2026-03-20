@@ -28,9 +28,9 @@ export default function Header() {
           <Image
             src={LOGO_SRC}
             alt="Abai Library"
-            width={140}
-            height={40}
-            className="h-8 w-auto object-contain object-left sm:h-9"
+            width={208}
+            height={60}
+            className="h-[60px] w-auto object-contain object-left sm:h-[70px]"
             priority
           />
         </Link>
