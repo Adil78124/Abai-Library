@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AiAvailability {
+  PROCESSING
+  AVAILABLE
+  UNAVAILABLE
+  FAILED
+}
+
+enum CollectionPlacement {
+  HOME
+  CATALOG
+  BOOK_PAGE
+}
+
+enum CollectionType {
+  MANUAL
+  AUTOMATIC
+}
+
+enum AutomaticCollectionKind {
+  NEW_BOOKS
+  POPULAR
+  AI_READY
+  RECENTLY_UPDATED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Book {
+  id             String         @id @default(uuid())
+  slug           String         @unique
+  title          String
+  author         String         @default("")
+  authorId       String?
+  authorRecord   Author?        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  description    String?
+  shortDescription String?
+  language       String?
+  ageLimit       Int?
+  isbn           String?
+  publishedYear  Int?
+  publisher      String?
+  pageCount      Int?
+  coverImage     String?
+  pdfFile        String?
+  genre          String?
+  tags           String[]       @default([])
+  image          String?
+  file           String?
+  status         BookStatus     @default(DRAFT)
+  aiAvailability AiAvailability @default(UNAVAILABLE)
+  categoryLinks  BookCategory[]
+  tagLinks       BookTag[]
+  collectionLinks CollectionBook[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Author {
+  id          String   @id @default(uuid())
+  fullName    String
+  slug        String   @unique
+  description String?
+  birthYear   Int?
+  deathYear   Int?
+  image       String?
+  books       Book[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  bookLinks   BookCategory[]
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  bookLinks BookTag[]
+}
+
+model BookCategory {
+  id         String   @id @default(uuid())
+  bookId     String
+  categoryId String
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, categoryId])
+}
+
+model BookTag {
+  id     String @id @default(uuid())
+  bookId String
+  tagId  String
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, tagId])
+}
+
+model Collection {
+  id            String                  @id @default(uuid())
+  slug          String                  @unique
+  title         String
+  description   String?
+  placement     CollectionPlacement     @default(HOME)
+  type          CollectionType          @default(MANUAL)
+  automaticKind AutomaticCollectionKind?
+  isActive      Boolean                 @default(true)
+  startsAt      DateTime?
+  endsAt        DateTime?
+  sortOrder     Int                     @default(0)
+  books         CollectionBook[]
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+}
+
+model CollectionBook {
+  id           String     @id @default(uuid())
+  collectionId String
+  bookId       String
+  sortOrder    Int        @default(0)
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  book         Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, bookId])
+}

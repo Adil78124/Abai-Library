@@ -1,0 +1,11 @@
+node_modules
+# Keep environment variables out of version control
+.env
+.env.local
+.env.*.local
+
+# Build output
+/dist
+
+# Prisma generated client (regenerate with `npx prisma generate`)
+/generated

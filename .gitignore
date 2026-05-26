@@ -1,10 +1,22 @@
+# Dependencies
 node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
 .next/
 out/
-.vercel/
-.turbo/
-.env*
+dist/
+backend/dist/
+backend/generated/
+
+# Logs & OS
+*.log
 .DS_Store
+
+# IDE
 .cursor/
 .vscode/
-*.log
